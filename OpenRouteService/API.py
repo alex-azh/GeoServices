@@ -1,8 +1,6 @@
 import openrouteservice
 from openrouteservice import convert
-
 from OpenRouteService.API_KEYS import token
-
 
 def GetDistanceLineBoundTime(points)->dict:
     """
@@ -22,5 +20,30 @@ def GetDistanceLineBoundTime(points)->dict:
     except OSError as ex:
         print(ex.strerror)
         return False
+
+def ParserDict(s):
+    if type(s)==dict:
+        if s.get("features"):
+            if len(s["features"])>0:
+                if type(s["features"][0])==dict:
+                    if s["features"][0].get("geometry"):
+                        if s["features"][0]["geometry"].get("coordinates"):
+                            return s["features"][0]["geometry"]["coordinates"]
+
+def GeoCoder(address: str):
+    """
+    Получить координаты точки по её адресу.
+    :param address: вводимый пользователем адрес
+    :return: (долгота,широта)
+    """
+    try:
+        client = openrouteservice.Client(key=token)
+        r=openrouteservice.client.pelias_search(client,address)
+        if r:
+            return ParserDict(r)
+        return False
+    except:
+        return False
+        print("Ошибка GeoCoder()")
 
 

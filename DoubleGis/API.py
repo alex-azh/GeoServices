@@ -52,7 +52,7 @@ def GISWay(data):
     """
     Запрос в 2GIS по поиску маршруту на машине.
     :param data: тело запроса типа dict.
-    :return: Точки в самом результате в видео (широта, долгота).
+    :return: Точки в самом результате в виде (широта, долгота).
     """
     r = req.post('https://catalog.api.2gis.ru/carrouting/6.0.0/global?key=rurbbn3446', headers=h, data=json.dumps(data),
                  stream=True)
